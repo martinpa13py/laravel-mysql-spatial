@@ -15,7 +15,7 @@ class MysqlConnection extends IlluminateMySqlConnection
 
     protected function getDefaultSchemaGrammar()
     {
-        if (method_exists($this, 'withTablePrefix')) {
+        if (version_compare(app()->version(), '12.0.0', '<')) {
             return $this->withTablePrefix(new MySqlGrammar());
         }
 
