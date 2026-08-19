@@ -7,16 +7,12 @@ use Illuminate\Database\Schema\MySqlBuilder;
 
 class Builder extends MySqlBuilder
 {
-    /**
-     * Create a new command set with a Closure.
-     *
-     * @param string  $table
-     * @param Closure $callback
-     *
-     * @return Blueprint
-     */
-    protected function createBlueprint($table, Closure $callback = null)
+    protected function createBlueprint($table, ?Closure $callback = null)
     {
+        if (version_compare(app()->version(), '12.0.0', '>=')) {
+            return new Blueprint($this->connection, $table, $callback);
+        }
+
         return new Blueprint($table, $callback);
     }
 }
