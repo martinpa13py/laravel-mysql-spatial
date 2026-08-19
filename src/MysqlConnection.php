@@ -13,21 +13,15 @@ class MysqlConnection extends IlluminateMySqlConnection
         parent::__construct($pdo, $database, $tablePrefix, $config);
     }
 
-    /**
-     * Get the default schema grammar instance.
-     *
-     * @return \Illuminate\Database\Grammar
-     */
     protected function getDefaultSchemaGrammar()
     {
-        return $this->withTablePrefix(new MySqlGrammar());
+        if (method_exists($this, 'withTablePrefix')) {
+            return $this->withTablePrefix(new MySqlGrammar());
+        }
+
+        return new MySqlGrammar($this);
     }
 
-    /**
-     * Get a schema builder instance for the connection.
-     *
-     * @return \Illuminate\Database\Schema\MySqlBuilder
-     */
     public function getSchemaBuilder()
     {
         if (is_null($this->schemaGrammar)) {

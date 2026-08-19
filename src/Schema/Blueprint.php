@@ -6,6 +6,11 @@ use Illuminate\Database\Schema\Blueprint as IlluminateBlueprint;
 
 class Blueprint extends IlluminateBlueprint
 {
+    public function __construct(...$args)
+    {
+        parent::__construct(...$args);
+    }
+
     /**
      * Add a geometry column on the table.
      *
