@@ -10,9 +10,12 @@ class MySqlGrammar extends IlluminateMySqlGrammar
 {
     const COLUMN_MODIFIER_SRID = 'Srid';
 
-    public function __construct()
+    public function __construct(...$args)
     {
-        // Enable SRID as a column modifier
+        if (!empty($args)) {
+            parent::__construct(...$args);
+        }
+
         if (!in_array(self::COLUMN_MODIFIER_SRID, $this->modifiers)) {
             $this->modifiers[] = self::COLUMN_MODIFIER_SRID;
         }
