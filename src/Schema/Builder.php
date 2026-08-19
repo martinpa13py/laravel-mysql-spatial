@@ -9,7 +9,10 @@ class Builder extends MySqlBuilder
 {
     protected function createBlueprint($table, ?Closure $callback = null)
     {
-        if (version_compare(app()->version(), '12.0.0', '>=')) {
+        $ref = new \ReflectionClass(\Illuminate\Database\Schema\Blueprint::class);
+        $firstParam = $ref->getConstructor()->getParameters()[0] ?? null;
+
+        if ($firstParam && $firstParam->getName() === 'connection') {
             return new Blueprint($this->connection, $table, $callback);
         }
 
