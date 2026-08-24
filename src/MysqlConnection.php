@@ -13,15 +13,23 @@ class MysqlConnection extends IlluminateMySqlConnection
         parent::__construct($pdo, $database, $tablePrefix, $config);
     }
 
+    /**
+     * Get the default schema grammar instance.
+     *
+     * Laravel 11+ passes the connection into Grammar and removed withTablePrefix().
+     *
+     * @return \Illuminate\Database\Schema\Grammars\Grammar
+     */
     protected function getDefaultSchemaGrammar()
     {
-        if (version_compare(app()->version(), '12.0.0', '<')) {
-            return $this->withTablePrefix(new MySqlGrammar());
-        }
-
         return new MySqlGrammar($this);
     }
 
+    /**
+     * Get a schema builder instance for the connection.
+     *
+     * @return \Illuminate\Database\Schema\MySqlBuilder
+     */
     public function getSchemaBuilder()
     {
         if (is_null($this->schemaGrammar)) {
